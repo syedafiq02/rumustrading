@@ -1,0 +1,312 @@
+:root {
+  --bg:        #0C1114;
+  --surface:   #141A20;
+  --raised:    #1B232A;
+  --line:      #26313A;
+  --line-soft: #1E272F;
+  --text:      #E8EEF2;
+  --muted:     #8FA0AD;
+  --faint:     #63737F;
+  --buy:       #2DBE86;
+  --buy-soft:  rgba(45, 190, 134, 0.09);
+  --buy-line:  rgba(45, 190, 134, 0.30);
+  --sell:      #F0566A;
+  --sell-soft: rgba(240, 86, 106, 0.09);
+  --sell-line: rgba(240, 86, 106, 0.30);
+  --accent:    #D8A548;
+  --sans: "IBM Plex Sans", "Segoe UI", system-ui, -apple-system, sans-serif;
+  --mono: "IBM Plex Mono", ui-monospace, "Cascadia Mono", Consolas, monospace;
+  --r: 12px;
+}
+
+* { box-sizing: border-box; }
+
+html, body {
+  background: var(--bg);
+  color: var(--text);
+}
+
+body {
+  margin: 0;
+  padding-inline: 16px;
+  padding-block: 28px 44px;
+  font-family: var(--sans);
+  font-size: 15px;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+}
+
+.wrap {
+  max-width: 660px;
+  margin-inline: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+/* ---------- header ---------- */
+
+header {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+h1 {
+  margin: 0;
+  font-size: 21px;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+}
+
+.tagline {
+  margin: 0;
+  font-family: var(--mono);
+  font-size: 12px;
+  color: var(--faint);
+  letter-spacing: 0.02em;
+  font-variant-numeric: tabular-nums;
+}
+
+/* ---------- card ---------- */
+
+.card {
+  background: var(--surface);
+  border: 1px solid var(--line-soft);
+  border-radius: var(--r);
+  padding: 18px;
+}
+
+.card-title {
+  margin: 0 0 14px;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--faint);
+}
+
+/* ---------- inputs ---------- */
+
+.field-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  min-width: 0;
+}
+
+label {
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 0.04em;
+  color: var(--muted);
+}
+
+input[type="text"] {
+  width: 100%;
+  padding: 11px 12px;
+  background: var(--raised);
+  border: 1px solid var(--line);
+  border-radius: 9px;
+  color: var(--text);
+  font-family: var(--mono);
+  font-size: 16px;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0.01em;
+  transition: border-color 120ms ease, background 120ms ease;
+}
+
+input[type="text"]::placeholder { color: var(--faint); }
+
+input[type="text"]:hover { border-color: #33414C; }
+
+input[type="text"]:focus {
+  outline: none;
+  border-color: var(--accent);
+  background: #1E262E;
+}
+
+input[type="text"]:focus-visible {
+  outline: 2px solid rgba(216, 165, 72, 0.35);
+  outline-offset: 1px;
+}
+
+input.invalid { border-color: var(--sell); }
+
+/* ---------- actions ---------- */
+
+.actions {
+  display: flex;
+  gap: 10px;
+  margin-top: 16px;
+}
+
+button.action {
+  flex: 1;
+  padding: 11px 16px;
+  border-radius: 9px;
+  font-family: var(--sans);
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  cursor: pointer;
+  border: 1px solid transparent;
+  transition: background 120ms ease, border-color 120ms ease, color 120ms ease;
+}
+
+.btn-primary {
+  background: var(--text);
+  color: #0C1114;
+}
+
+.btn-primary:hover { background: #FFFFFF; }
+
+.btn-ghost {
+  flex: 0 0 auto;
+  background: transparent;
+  border-color: var(--line);
+  color: var(--muted);
+}
+
+.btn-ghost:hover { color: var(--text); border-color: #3A4752; }
+
+button:focus-visible {
+  outline: 2px solid rgba(216, 165, 72, 0.5);
+  outline-offset: 2px;
+}
+
+/* ---------- validation ---------- */
+
+.notice {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  margin: 12px 0 0;
+  padding: 9px 12px;
+  border-radius: 9px;
+  background: var(--sell-soft);
+  border: 1px solid var(--sell-line);
+  color: #FF98A5;
+  font-size: 13px;
+}
+
+/* display:flex above would otherwise beat the browser's [hidden] rule. */
+.notice[hidden] { display: none; }
+
+.notice::before {
+  content: "!";
+  flex: none;
+  width: 16px;
+  height: 16px;
+  margin-top: 2px;
+  border-radius: 50%;
+  background: var(--sell);
+  color: #14090B;
+  font-family: var(--mono);
+  font-size: 11px;
+  font-weight: 600;
+  line-height: 16px;
+  text-align: center;
+}
+
+/* ---------- results ---------- */
+
+.results {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+.level {
+  display: block;
+  width: 100%;
+  padding: 18px 18px 16px;
+  border-radius: var(--r);
+  border: 1px solid;
+  text-align: left;
+  font: inherit;
+  color: inherit;
+  cursor: pointer;
+  transition: background 120ms ease;
+}
+
+.level-buy  { background: var(--buy-soft);  border-color: var(--buy-line); }
+.level-sell { background: var(--sell-soft); border-color: var(--sell-line); }
+
+.level:hover { background: var(--raised); }
+
+.level-buy:focus-visible {
+  outline: 2px solid var(--buy);
+  outline-offset: 2px;
+}
+
+.level-sell:focus-visible {
+  outline: 2px solid var(--sell);
+  outline-offset: 2px;
+}
+
+.level-head {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.11em;
+  text-transform: uppercase;
+}
+
+.level-buy  .level-head { color: var(--buy); }
+.level-sell .level-head { color: var(--sell); }
+
+.dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: currentColor;
+  flex: none;
+}
+
+.level-value {
+  margin-top: 8px;
+  font-family: var(--mono);
+  font-size: clamp(30px, 8.5vw, 38px);
+  font-weight: 500;
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+  font-variant-numeric: tabular-nums;
+  color: var(--text);
+}
+
+.level-note {
+  min-height: 1.4em;
+  margin-top: 4px;
+  font-family: var(--mono);
+  font-size: 11.5px;
+  color: var(--accent);
+}
+
+footer {
+  font-family: var(--mono);
+  font-size: 11.5px;
+  color: var(--faint);
+  text-align: center;
+}
+
+/* ---------- narrow ---------- */
+
+@media (max-width: 460px) {
+  .field-row, .results { grid-template-columns: 1fr; }
+  .actions { flex-wrap: wrap; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * { transition: none !important; }
+}

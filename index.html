@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="color-scheme" content="dark">
+  <meta name="description" content="Range split calculator: BUY and SELL levels from a high and a low.">
+  <title>Range Split Calculator</title>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600&display=swap">
+  <link rel="stylesheet" href="css/style.css">
+  <script src="js/script.js" defer></script>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <h1>Trading Calculator</h1>
+    <p class="tagline">Be Smart</p>
+  </header>
+
+  <section class="card">
+    <h2 class="card-title">Inputs</h2>
+
+    <div class="field-row">
+      <div class="field">
+        <label for="high">High Price</label>
+        <input id="high" type="text" inputmode="decimal" autocomplete="off" spellcheck="false" placeholder="0.00">
+      </div>
+      <div class="field">
+        <label for="low">Low Price</label>
+        <input id="low" type="text" inputmode="decimal" autocomplete="off" spellcheck="false" placeholder="0.00">
+      </div>
+    </div>
+
+    <div class="actions">
+      <button class="action btn-primary" type="button" id="calc">Calculate</button>
+      <button class="action btn-ghost" type="button" id="reset">Reset</button>
+    </div>
+
+    <p class="notice" id="notice" hidden></p>
+  </section>
+
+  <section class="results">
+    <button class="level level-buy" type="button" id="buyTile">
+      <span class="level-head"><span class="dot"></span>Buy Price</span>
+      <div class="level-value" id="buyValue">&mdash;</div>
+      <div class="level-note" id="buyNote"></div>
+    </button>
+
+    <button class="level level-sell" type="button" id="sellTile">
+      <span class="level-head"><span class="dot"></span>Sell Price</span>
+      <div class="level-value" id="sellValue">&mdash;</div>
+      <div class="level-note" id="sellNote"></div>
+    </button>
+  </section>
+
+  <footer>Tap a level to copy it.</footer>
+</div>
+</body>
+</html>
