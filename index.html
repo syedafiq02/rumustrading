@@ -4,57 +4,82 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <meta name="color-scheme" content="dark">
-  <meta name="description" content="Range split calculator: BUY and SELL levels from a high and a low.">
-  <title>Range Split Calculator</title>
+  <meta name="description" content="Trading calculators: pullback entries and breakout levels.">
+  <title>Trading Calculator</title>
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600&display=swap">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@300;400;500;600&display=swap">
   <link rel="stylesheet" href="css/style.css">
-  <script src="js/script.js" defer></script>
+  <script src="js/nav.js" defer></script>
 </head>
-<body>
-<div class="wrap">
-  <header>
-    <h1>Trading Calculator</h1>
-    <p class="tagline">Be Smart</p>
+<body class="home">
+
+<div class="backdrop" aria-hidden="true">
+  <!-- Presentation attributes, not just CSS: a polyline defaults to fill:black,
+       so a missing or stale stylesheet would otherwise paint the page black. -->
+  <svg viewBox="0 0 1024 576" preserveAspectRatio="xMidYMid slice" height="0"
+       fill="none" stroke="#C9A961" stroke-width="2" stroke-linejoin="round" opacity="0.06">
+    <polyline points="-40,520 130,250 215,360 355,140 450,255 600,40"/>
+    <polyline points="430,576 610,300 700,415 840,170 930,280 1070,80"/>
+    <polyline points="-60,300 60,150 150,250 250,70"/>
+  </svg>
+</div>
+
+<div class="home-wrap">
+
+  <header class="brand">
+    <svg class="brand-mark" viewBox="0 0 96 80" width="58" height="48" role="img" aria-label="Trading Tools">
+      <defs>
+        <linearGradient id="goldMark" x1="0" y1="0" x2="1" y2="1">
+          <stop offset="0" stop-color="#F7EBCA"/>
+          <stop offset="0.45" stop-color="#D3B478"/>
+          <stop offset="1" stop-color="#8C6F3E"/>
+        </linearGradient>
+      </defs>
+      <path d="M14 6 H70 V20 H50 V72 H34 V20 H14 Z" fill="url(#goldMark)"/>
+      <!-- the arrow is knocked out of the T first, so the monogram stays legible -->
+      <g fill="none" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M24 64 L42 46 L54 58 L78 26 M66 26 H78 V38"
+              stroke="#04091A" stroke-width="14"/>
+        <path d="M24 64 L42 46 L54 58 L78 26 M66 26 H78 V38"
+              stroke="url(#goldMark)" stroke-width="7"/>
+      </g>
+    </svg>
+    <p class="brand-name">Trading Tools</p>
   </header>
 
-  <section class="card">
-    <h2 class="card-title">Inputs</h2>
+  <main class="home-main">
+    <h1 class="home-title">Trading Calculator</h1>
+    <p class="home-sub">Select your tool</p>
 
-    <div class="field-row">
-      <div class="field">
-        <label for="high">High Price</label>
-        <input id="high" type="text" inputmode="decimal" autocomplete="off" spellcheck="false" placeholder="0.00">
-      </div>
-      <div class="field">
-        <label for="low">Low Price</label>
-        <input id="low" type="text" inputmode="decimal" autocomplete="off" spellcheck="false" placeholder="0.00">
-      </div>
-    </div>
+    <nav class="tool-panel">
+      <button class="tool-btn" type="button" data-href="pullback.html">
+        <span class="tool-icon">
+          <svg viewBox="0 0 44 44" width="42" height="42" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M7 9 L17 30 L27 20 L37 9"/>
+            <path d="M28 9 H37 V18"/>
+          </svg>
+        </span>
+        <span class="tool-name"><span>Pullback</span> <span>Calculator</span></span>
+      </button>
 
-    <div class="actions">
-      <button class="action btn-primary" type="button" id="calc">Calculate</button>
-      <button class="action btn-ghost" type="button" id="reset">Reset</button>
-    </div>
+      <button class="tool-btn" type="button" data-href="breakout.html">
+        <span class="tool-name"><span>Breakout</span> <span>Calculator</span></span>
+        <span class="tool-icon">
+          <svg viewBox="0 0 44 44" width="42" height="42" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path class="icon-dash" d="M4 28 H40"/>
+            <path d="M8 38 L18 26 L25 31 L36 9"/>
+            <path d="M27 9 H36 V18"/>
+          </svg>
+        </span>
+      </button>
+    </nav>
+  </main>
 
-    <p class="notice" id="notice" hidden></p>
-  </section>
+  <footer class="home-foot">
+    <p class="foot-note">&copy; 2026. All trading tools are for educational purposes.</p>
+    <p class="foot-links"><span>Terms &amp; Conditions</span><span>Privacy Policy</span></p>
+  </footer>
 
-  <section class="results">
-    <button class="level level-buy" type="button" id="buyTile">
-      <span class="level-head"><span class="dot"></span>Buy Price</span>
-      <div class="level-value" id="buyValue">&mdash;</div>
-      <div class="level-note" id="buyNote"></div>
-    </button>
-
-    <button class="level level-sell" type="button" id="sellTile">
-      <span class="level-head"><span class="dot"></span>Sell Price</span>
-      <div class="level-value" id="sellValue">&mdash;</div>
-      <div class="level-note" id="sellNote"></div>
-    </button>
-  </section>
-
-  <footer>Tap a level to copy it.</footer>
 </div>
 </body>
 </html>

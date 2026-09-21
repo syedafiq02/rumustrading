@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="color-scheme" content="dark">
+  <meta name="description" content="Pullback calculator: BUY and SELL levels from a high and a low.">
+  <title>Pullback Calculator</title>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@300;400;500;600&display=swap">
+  <link rel="stylesheet" href="css/style.css">
+  <script src="js/nav.js" defer></script>
+  <script src="js/pullback.js" defer></script>
+</head>
+<body>
+
+<div class="backdrop" aria-hidden="true">
+  <svg viewBox="0 0 1024 576" preserveAspectRatio="xMidYMid slice" height="0"
+       fill="none" stroke="#C9A961" stroke-width="2" stroke-linejoin="round" opacity="0.06">
+    <polyline points="-40,470 120,250 210,350 340,150 430,260 590,60"/>
+    <polyline points="450,576 610,320 700,430 840,190 930,300 1070,100"/>
+    <polyline points="-60,300 60,150 150,250 250,70"/>
+    <circle cx="232" cy="188" r="9"/>
+    <circle class="node-dot" cx="232" cy="188" r="3"/>
+    <circle cx="792" cy="150" r="9"/>
+    <circle class="node-dot" cx="792" cy="150" r="3"/>
+    <circle cx="238" cy="392" r="9"/>
+    <circle class="node-dot" cx="238" cy="392" r="3"/>
+    <circle cx="800" cy="360" r="9"/>
+    <circle class="node-dot" cx="800" cy="360" r="3"/>
+    <circle cx="706" cy="96" r="7"/>
+    <circle class="node-dot" cx="706" cy="96" r="2.5"/>
+  </svg>
+</div>
+
+<div class="wrap">
+
+  <div class="topbar">
+    <button class="backlink" type="button" data-href="index.html">&larr; Back to Home</button>
+
+    <div class="brand">
+      <svg class="brand-mark" viewBox="0 0 96 80" width="30" height="25" role="img" aria-label="Trading Tools">
+        <defs>
+          <linearGradient id="goldMark" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0" stop-color="#F7EBCA"/>
+            <stop offset="0.45" stop-color="#D3B478"/>
+            <stop offset="1" stop-color="#8C6F3E"/>
+          </linearGradient>
+        </defs>
+        <path d="M14 6 H70 V20 H50 V72 H34 V20 H14 Z" fill="url(#goldMark)"/>
+        <g fill="none" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M24 64 L42 46 L54 58 L78 26 M66 26 H78 V38" stroke="#04091A" stroke-width="14"/>
+          <path d="M24 64 L42 46 L54 58 L78 26 M66 26 H78 V38" stroke="url(#goldMark)" stroke-width="7"/>
+        </g>
+      </svg>
+      <p class="brand-name">Trading Tools</p>
+    </div>
+  </div>
+
+  <div class="title-row">
+    <h1 class="page-title">Pullback Calculator</h1>
+    <p class="tagline">Be Smart</p>
+  </div>
+
+  <section class="card">
+    <h2 class="card-title">Inputs</h2>
+
+    <div class="field-row">
+      <div class="field">
+        <label for="high">High Price</label>
+        <div class="field-input" data-badge="H">
+          <input id="high" type="text" inputmode="decimal" autocomplete="off" spellcheck="false" placeholder="0.00">
+        </div>
+      </div>
+      <div class="field">
+        <label for="low">Low Price</label>
+        <div class="field-input" data-badge="L">
+          <input id="low" type="text" inputmode="decimal" autocomplete="off" spellcheck="false" placeholder="0.00">
+        </div>
+      </div>
+    </div>
+
+    <div class="actions">
+      <button class="action btn-primary" type="button" id="calc">Calculate</button>
+      <button class="action btn-secondary" type="button" id="reset">Reset</button>
+    </div>
+
+    <p class="notice" id="notice" hidden></p>
+  </section>
+
+  <section class="card">
+    <h2 class="card-title">Pullback Levels</h2>
+
+    <div class="results">
+      <button class="level level-buy" type="button" id="buyTile">
+        <span class="level-head">
+          <span class="level-label"><span class="dot"></span>Buy Price</span>
+          <svg class="level-icon" viewBox="0 0 26 24" width="26" height="24" aria-hidden="true"
+               fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M3 18 L10 11 L14 15 L23 6"/>
+            <path d="M17 6 H23 V12"/>
+          </svg>
+        </span>
+        <div class="level-value" id="buyValue">&mdash;</div>
+        <div class="level-note" id="buyNote"></div>
+      </button>
+
+      <button class="level level-sell" type="button" id="sellTile">
+        <span class="level-head">
+          <span class="level-label"><span class="dot"></span>Sell Price</span>
+          <svg class="level-icon" viewBox="0 0 26 24" width="26" height="24" aria-hidden="true"
+               fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M3 6 L10 13 L14 9 L23 18"/>
+            <path d="M17 18 H23 V12"/>
+          </svg>
+        </span>
+        <div class="level-value" id="sellValue">&mdash;</div>
+        <div class="level-note" id="sellNote"></div>
+      </button>
+    </div>
+  </section>
+
+  <footer>Tap a level to copy it.</footer>
+
+</div>
+</body>
+</html>

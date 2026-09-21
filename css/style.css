@@ -1,99 +1,426 @@
+/* ===========================================================
+   Trading Tools — navy + gold theme
+   -----------------------------------------------------------
+    1. Tokens              6. Cards + fields
+    2. Base + backdrop     7. Buttons
+    3. Brand + top bar     8. Notice
+    4. Home                9. Level tiles
+    5. Page title         10. Footer, responsive, motion
+   =========================================================== */
+
+/* ---------- 1. tokens ---------- */
+
 :root {
-  --bg:        #0C1114;
-  --surface:   #141A20;
-  --raised:    #1B232A;
-  --line:      #26313A;
-  --line-soft: #1E272F;
-  --text:      #E8EEF2;
-  --muted:     #8FA0AD;
-  --faint:     #63737F;
-  --buy:       #2DBE86;
-  --buy-soft:  rgba(45, 190, 134, 0.09);
-  --buy-line:  rgba(45, 190, 134, 0.30);
-  --sell:      #F0566A;
-  --sell-soft: rgba(240, 86, 106, 0.09);
-  --sell-line: rgba(240, 86, 106, 0.30);
-  --accent:    #D8A548;
+  /* navy field */
+  --navy-900: #04091A;
+  --navy-700: #0B1A33;
+  --navy-600: #17304F;
+  --navy-text: #8698B8;
+
+  /* gold */
+  --gold-100: #F7EBCA;
+  --gold-200: #E9D8B2;
+  --gold-300: #D3B478;
+  --gold-500: #C9A961;
+  --gold-700: #9A7C48;
+  --gold-line:      rgba(211, 180, 120, 0.42);
+  --gold-line-soft: rgba(211, 180, 120, 0.20);
+
+  /* text */
+  --text:  #E8EEF2;
+  --muted: #A9B6C9;
+  --faint: #7386A0;
+
+  /* buy / sell tones */
+  --buy:       #35D08A;
+  --buy-line:  rgba(53, 208, 138, 0.34);
+  --sell:      #FF5E6B;
+  --sell-soft: rgba(255, 94, 107, 0.10);
+  --sell-line: rgba(255, 94, 107, 0.34);
+  --sell-text: #FF98A5;
+
+  /* type */
   --sans: "IBM Plex Sans", "Segoe UI", system-ui, -apple-system, sans-serif;
   --mono: "IBM Plex Mono", ui-monospace, "Cascadia Mono", Consolas, monospace;
-  --r: 12px;
+
+  /* metrics */
+  --r:    14px;   /* cards           */
+  --r-sm: 9px;    /* controls, tiles */
+  --gap:  14px;
+  --pad:  18px;
+  --t:    120ms ease;
+
+  /* the brushed-metal face reused by the bar, cards, inputs and tiles */
+  --sheen: linear-gradient(135deg,
+             rgba(255, 255, 255, 0.10) 0%,
+             rgba(255, 255, 255, 0.03) 24%,
+             rgba(255, 255, 255, 0) 50%);
 }
+
+.level-buy  { --tone: var(--buy);  --tone-line: var(--buy-line); }
+.level-sell { --tone: var(--sell); --tone-line: var(--sell-line); }
+
+/* ---------- 2. base + backdrop ---------- */
 
 * { box-sizing: border-box; }
 
-html, body {
-  background: var(--bg);
-  color: var(--text);
-}
+html { background: var(--navy-900); }
 
 body {
   margin: 0;
+  min-height: 100vh;
   padding-inline: 16px;
-  padding-block: 28px 44px;
+  padding-block: 22px 40px;
+  background-color: var(--navy-900);
+  background-image:
+    radial-gradient(ellipse 110% 75% at 50% -10%, var(--navy-600) 0%, transparent 62%),
+    radial-gradient(ellipse 90% 60% at 50% 108%, var(--navy-700) 0%, transparent 62%);
+  background-repeat: no-repeat;
+  color: var(--text);
   font-family: var(--sans);
   font-size: 15px;
   line-height: 1.5;
   -webkit-font-smoothing: antialiased;
 }
 
+/* Faint chart lines and nodes behind everything. */
+.backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.backdrop svg {
+  width: 100%;
+  height: 100%;
+}
+
+.backdrop polyline {
+  fill: none;
+  stroke: var(--gold-500);
+  stroke-width: 2;
+  stroke-linejoin: round;
+  opacity: 0.06;
+}
+
+.backdrop circle {
+  fill: none;
+  stroke: var(--gold-500);
+  stroke-width: 2;
+  opacity: 0.10;
+}
+
+.backdrop .node-dot {
+  fill: var(--gold-500);
+  stroke: none;
+  opacity: 0.16;
+}
+
 .wrap {
-  max-width: 660px;
+  position: relative;
+  z-index: 1;
+  max-width: 640px;
   margin-inline: auto;
   display: flex;
   flex-direction: column;
-  gap: 18px;
+  gap: var(--gap);
 }
 
-/* ---------- header ---------- */
+/* ---------- 3. brand + top bar ---------- */
 
-header {
+.brand { flex: none; }
+
+.brand-mark {
+  display: block;
+  width: 58px;
+  height: auto;
+  margin-inline: auto;
+  filter: drop-shadow(0 2px 10px rgba(201, 169, 97, 0.28));
+}
+
+.brand-name {
+  margin: 8px 0 0;
+  font-size: 15px;
+  font-weight: 600;
+  letter-spacing: 0.24em;
+  text-indent: 0.24em;   /* balance the trailing letter-space */
+  text-transform: uppercase;
+  color: var(--gold-200);
+}
+
+/* The calculator pages carry a compact lockup centred inside the bar. */
+.topbar {
+  position: relative;
+  display: flex;
+  align-items: center;
+  min-height: 46px;
+  margin-bottom: 22px;   /* room for the wordmark that hangs below the bar */
+  padding: 6px 8px;
+  border: 1px solid var(--gold-line-soft);
+  border-radius: 10px;
+  background:
+    var(--sheen),
+    linear-gradient(180deg, #1B2540 0%, #0C1426 55%, #16203A 100%);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.06);
+}
+
+.topbar .brand {
+  position: absolute;
+  left: 50%;
+  top: 3px;
+  transform: translateX(-50%);
+  text-align: center;
+  pointer-events: none;
+}
+
+.topbar .brand-mark { width: 30px; }
+
+.topbar .brand-name {
+  margin-top: 2px;
+  font-size: 9px;
+  letter-spacing: 0.2em;
+  text-indent: 0.2em;
+}
+
+.backlink {
+  position: relative;
+  z-index: 1;
+  padding: 8px 15px;
+  border: 1px solid var(--gold-line-soft);
+  border-radius: var(--r-sm);
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.08), rgba(255, 255, 255, 0.02));
+  color: var(--gold-200);
+  font-family: var(--sans);
+  font-size: 13px;
+  letter-spacing: 0.02em;
+  text-decoration: none;
+  cursor: pointer;
+  transition: border-color var(--t), color var(--t), background var(--t);
+}
+
+.backlink:hover {
+  border-color: var(--gold-300);
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.12), rgba(255, 255, 255, 0.04));
+  color: var(--gold-100);
+}
+
+.backlink:focus-visible {
+  outline: 2px solid var(--gold-300);
+  outline-offset: 2px;
+}
+
+/* ---------- 4. home ---------- */
+
+.home-wrap {
+  position: relative;
+  z-index: 1;
+  max-width: 780px;
+  margin-inline: auto;
+  min-height: calc(100vh - 62px);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 30px;
+  text-align: center;
+}
+
+.home-main {
+  margin-block: auto;   /* centres the title + tools in the leftover height */
+  width: 100%;
+}
+
+.home-title {
+  margin: 0;
+  font-size: clamp(27px, 6.4vw, 44px);
+  font-weight: 300;
+  letter-spacing: 0.16em;
+  text-indent: 0.16em;
+  text-transform: uppercase;
+  line-height: 1.2;
+  color: var(--gold-200);
+}
+
+@supports ((-webkit-background-clip: text) or (background-clip: text)) {
+  .home-title {
+    background: linear-gradient(180deg, #FBF2DA 0%, #DCC18A 45%, #A9854B 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+}
+
+.home-sub {
+  margin: 12px 0 0;
+  font-size: clamp(13px, 2.6vw, 17px);
+  letter-spacing: 0.17em;
+  text-indent: 0.17em;
+  text-transform: uppercase;
+  color: #E6EBF5;
+}
+
+.tool-panel {
+  margin-top: 34px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 18px;
+  padding: 18px;
+  border: 1px solid rgba(233, 216, 178, 0.14);
+  border-radius: 18px;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0.015));
+}
+
+.tool-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  min-height: 112px;
+  padding: 20px 18px;
+  border: 1px solid var(--gold-line);
+  border-radius: 10px;
+  background:
+    var(--sheen),
+    linear-gradient(180deg, #1B2540 0%, #0C1426 55%, #151E36 100%);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.07),
+    0 10px 26px rgba(0, 0, 0, 0.45);
+  color: var(--gold-100);
+  font: inherit;
+  cursor: pointer;
+  transition: border-color var(--t), box-shadow var(--t), transform var(--t);
+}
+
+.tool-btn:hover {
+  border-color: var(--gold-300);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.10),
+    0 12px 30px rgba(0, 0, 0, 0.5),
+    0 0 22px rgba(201, 169, 97, 0.22);
+  transform: translateY(-1px);
+}
+
+.tool-btn:active { transform: translateY(0); }
+
+.tool-btn:focus-visible {
+  outline: 2px solid var(--gold-300);
+  outline-offset: 3px;
+}
+
+.tool-icon {
+  flex: none;
+  display: block;
+  color: var(--gold-200);
+}
+
+.tool-icon svg {
+  display: block;
+  width: 42px;
+  height: 42px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2.6;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.tool-icon .icon-dash {
+  stroke-width: 2;
+  stroke-dasharray: 5 5;
+  opacity: 0.7;
+}
+
+.tool-name {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  font-size: clamp(14px, 2.4vw, 17px);
+  font-weight: 500;
+  letter-spacing: 0.09em;
+  text-indent: 0.09em;
+  text-transform: uppercase;
+  line-height: 1.25;
+}
+
+.home-foot {
+  flex: none;
+  margin-top: 8px;
+  font-size: 12px;
+  color: var(--navy-text);
+}
+
+.foot-note { margin: 0; }
+
+.foot-links {
+  display: flex;
+  justify-content: center;
+  gap: 26px;
+  margin: 10px 0 0;
+  font-size: 11px;
+  letter-spacing: 0.13em;
+  text-transform: uppercase;
+  color: var(--gold-700);
+}
+
+/* ---------- 5. page title ---------- */
+
+.title-row {
+  position: relative;
   display: flex;
   align-items: baseline;
-  justify-content: space-between;
-  gap: 12px;
-  flex-wrap: wrap;
+  justify-content: center;
+  margin-bottom: 2px;
 }
 
-h1 {
+.page-title {
   margin: 0;
-  font-size: 21px;
-  font-weight: 600;
-  letter-spacing: -0.01em;
+  font-size: clamp(19px, 4.2vw, 26px);
+  font-weight: 400;
+  letter-spacing: 0.15em;
+  text-indent: 0.15em;
+  text-transform: uppercase;
+  line-height: 1.25;
+  text-align: center;
+  color: var(--gold-200);
 }
 
 .tagline {
+  position: absolute;
+  right: 0;
+  bottom: 2px;
   margin: 0;
-  font-family: var(--mono);
   font-size: 12px;
-  color: var(--faint);
-  letter-spacing: 0.02em;
-  font-variant-numeric: tabular-nums;
+  letter-spacing: 0.04em;
+  color: var(--gold-700);
 }
 
-/* ---------- card ---------- */
+/* ---------- 6. cards + fields ---------- */
 
 .card {
-  background: var(--surface);
-  border: 1px solid var(--line-soft);
+  padding: var(--pad);
+  border: 1px solid var(--gold-line-soft);
   border-radius: var(--r);
-  padding: 18px;
+  background:
+    var(--sheen),
+    linear-gradient(170deg, #14213B 0%, #0A1426 58%, #111B32 100%);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.05),
+    0 10px 28px rgba(0, 0, 0, 0.35);
 }
 
 .card-title {
-  margin: 0 0 14px;
-  font-size: 11px;
-  font-weight: 600;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  color: var(--faint);
+  margin: 0 0 13px;
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 0.06em;
+  color: var(--gold-300);
 }
-
-/* ---------- inputs ---------- */
 
 .field-row {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 12px;
+  gap: var(--gap);
 }
 
 .field {
@@ -104,97 +431,124 @@ h1 {
 }
 
 label {
-  font-size: 12px;
-  font-weight: 500;
-  letter-spacing: 0.04em;
+  font-size: 13px;
+  letter-spacing: 0.01em;
   color: var(--muted);
 }
 
+/* The badge letters at both ends come from data-badge, so the input itself
+   stays a plain control with no extra markup inside it. */
+.field-input {
+  position: relative;
+  display: block;
+}
+
+.field-input::before,
+.field-input::after {
+  content: attr(data-badge);
+  position: absolute;
+  top: 50%;
+  width: 17px;
+  height: 17px;
+  margin-top: -8.5px;
+  border-radius: 4px;
+  background: rgba(255, 255, 255, 0.07);
+  color: var(--gold-200);
+  font-family: var(--mono);
+  font-size: 9.5px;
+  font-weight: 600;
+  line-height: 17px;
+  text-align: center;
+  pointer-events: none;
+}
+
+.field-input::before { left: 8px; }
+.field-input::after  { right: 8px; }
+
 input[type="text"] {
   width: 100%;
-  padding: 11px 12px;
-  background: var(--raised);
-  border: 1px solid var(--line);
-  border-radius: 9px;
+  padding: 10px 32px;
+  border: 1px solid var(--gold-line-soft);
+  border-radius: var(--r-sm);
+  background:
+    linear-gradient(135deg, rgba(255, 255, 255, 0.10) 0%, rgba(255, 255, 255, 0.02) 38%, rgba(255, 255, 255, 0) 60%),
+    linear-gradient(180deg, #232D45 0%, #131B2C 52%, #1E2739 100%);
   color: var(--text);
   font-family: var(--mono);
-  font-size: 16px;
+  font-size: 15px;
   font-variant-numeric: tabular-nums;
-  letter-spacing: 0.01em;
-  transition: border-color 120ms ease, background 120ms ease;
+  transition: border-color var(--t);
 }
 
 input[type="text"]::placeholder { color: var(--faint); }
 
-input[type="text"]:hover { border-color: #33414C; }
+input[type="text"]:hover { border-color: var(--gold-line); }
 
 input[type="text"]:focus {
   outline: none;
-  border-color: var(--accent);
-  background: #1E262E;
+  border-color: var(--gold-300);
 }
 
 input[type="text"]:focus-visible {
-  outline: 2px solid rgba(216, 165, 72, 0.35);
+  outline: 2px solid rgba(211, 180, 120, 0.35);
   outline-offset: 1px;
 }
 
 input.invalid { border-color: var(--sell); }
 
-/* ---------- actions ---------- */
+/* ---------- 7. buttons ---------- */
 
 .actions {
-  display: flex;
-  gap: 10px;
-  margin-top: 16px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--gap);
+  margin-top: 14px;
 }
 
 button.action {
-  flex: 1;
   padding: 11px 16px;
-  border-radius: 9px;
+  border: 1px solid rgba(255, 255, 255, 0.22);
+  border-radius: var(--r-sm);
   font-family: var(--sans);
   font-size: 14px;
   font-weight: 600;
   letter-spacing: 0.02em;
   cursor: pointer;
-  border: 1px solid transparent;
-  transition: background 120ms ease, border-color 120ms ease, color 120ms ease;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.35);
+  transition: filter var(--t), transform var(--t);
 }
+
+button.action:hover { filter: brightness(1.07); }
+
+button.action:active { transform: translateY(1px); }
 
 .btn-primary {
-  background: var(--text);
-  color: #0C1114;
+  background: linear-gradient(180deg, #F6E6BB 0%, #DCC086 46%, #B4924C 100%);
+  color: #2A1F06;
 }
 
-.btn-primary:hover { background: #FFFFFF; }
-
-.btn-ghost {
-  flex: 0 0 auto;
-  background: transparent;
-  border-color: var(--line);
-  color: var(--muted);
+.btn-secondary {
+  background: linear-gradient(180deg, #EDF1F7 0%, #C3CDDB 46%, #97A3B5 100%);
+  color: #1B2231;
 }
-
-.btn-ghost:hover { color: var(--text); border-color: #3A4752; }
 
 button:focus-visible {
-  outline: 2px solid rgba(216, 165, 72, 0.5);
+  outline: 2px solid var(--gold-300);
   outline-offset: 2px;
 }
 
-/* ---------- validation ---------- */
+/* ---------- 8. notice ---------- */
 
 .notice {
   display: flex;
   align-items: flex-start;
   gap: 8px;
-  margin: 12px 0 0;
+  margin: var(--gap) 0 0;
   padding: 9px 12px;
-  border-radius: 9px;
-  background: var(--sell-soft);
   border: 1px solid var(--sell-line);
-  color: #FF98A5;
+  border-radius: var(--r-sm);
+  background: var(--sell-soft);
+  color: var(--sell-text);
   font-size: 13px;
 }
 
@@ -209,7 +563,7 @@ button:focus-visible {
   margin-top: 2px;
   border-radius: 50%;
   background: var(--sell);
-  color: #14090B;
+  color: #2A0A0E;
   font-family: var(--mono);
   font-size: 11px;
   font-weight: 600;
@@ -217,94 +571,137 @@ button:focus-visible {
   text-align: center;
 }
 
-/* ---------- results ---------- */
+/* ---------- 9. level tiles ---------- */
 
 .results {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 12px;
+  gap: var(--gap);
 }
 
 .level {
   display: block;
   width: 100%;
-  padding: 18px 18px 16px;
-  border-radius: var(--r);
-  border: 1px solid;
+  padding: 14px 15px 12px;
+  border: 1px solid var(--tone-line);
+  border-radius: var(--r-sm);
+  background:
+    var(--sheen),
+    linear-gradient(180deg, #1D2740 0%, #101A2D 55%, #1A2439 100%);
   text-align: left;
   font: inherit;
   color: inherit;
   cursor: pointer;
-  transition: background 120ms ease;
+  transition: border-color var(--t), transform var(--t);
 }
 
-.level-buy  { background: var(--buy-soft);  border-color: var(--buy-line); }
-.level-sell { background: var(--sell-soft); border-color: var(--sell-line); }
-
-.level:hover { background: var(--raised); }
-
-.level-buy:focus-visible {
-  outline: 2px solid var(--buy);
-  outline-offset: 2px;
+.level:hover {
+  border-color: var(--tone);
+  transform: translateY(-1px);
 }
 
-.level-sell:focus-visible {
-  outline: 2px solid var(--sell);
+.level:active { transform: translateY(0); }
+
+.level:focus-visible {
+  outline: 2px solid var(--tone);
   outline-offset: 2px;
 }
 
 .level-head {
   display: flex;
   align-items: center;
-  gap: 7px;
-  font-size: 11px;
-  font-weight: 600;
-  letter-spacing: 0.11em;
-  text-transform: uppercase;
+  justify-content: space-between;
+  gap: 10px;
 }
 
-.level-buy  .level-head { color: var(--buy); }
-.level-sell .level-head { color: var(--sell); }
+.level-label {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  font-size: 12.5px;
+  font-weight: 500;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--text);
+}
 
 .dot {
   width: 7px;
   height: 7px;
   border-radius: 50%;
-  background: currentColor;
+  background: var(--tone);
   flex: none;
 }
 
+.level-icon {
+  flex: none;
+  display: block;
+  width: 26px;
+  height: 24px;
+  fill: none;
+  stroke: var(--tone);
+  stroke-width: 2.6;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
 .level-value {
-  margin-top: 8px;
+  margin-top: 10px;
   font-family: var(--mono);
-  font-size: clamp(30px, 8.5vw, 38px);
+  font-size: clamp(24px, 6vw, 30px);
   font-weight: 500;
   line-height: 1.1;
-  letter-spacing: -0.02em;
+  letter-spacing: -0.01em;
   font-variant-numeric: tabular-nums;
-  color: var(--text);
+  color: var(--tone);
 }
 
 .level-note {
   min-height: 1.4em;
-  margin-top: 4px;
+  margin-top: 2px;
   font-family: var(--mono);
-  font-size: 11.5px;
-  color: var(--accent);
+  font-size: 11px;
+  color: var(--gold-300);
 }
 
+/* ---------- 10. footer, responsive, motion ---------- */
+
 footer {
-  font-family: var(--mono);
-  font-size: 11.5px;
-  color: var(--faint);
+  margin-top: 2px;
+  font-size: 12.5px;
+  color: var(--navy-text);
   text-align: center;
 }
 
-/* ---------- narrow ---------- */
+@media (max-width: 620px) {
+  .field-row,
+  .results,
+  .actions,
+  .tool-panel { grid-template-columns: 1fr; }
 
-@media (max-width: 460px) {
-  .field-row, .results { grid-template-columns: 1fr; }
-  .actions { flex-wrap: wrap; }
+  /* stack the bar so the centred lockup cannot collide with the button */
+  .topbar {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 10px;
+    margin-bottom: var(--gap);
+    padding: 10px;
+  }
+
+  .topbar .brand {
+    position: static;
+    transform: none;
+  }
+
+  .title-row {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .tagline {
+    position: static;
+    text-align: center;
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {
